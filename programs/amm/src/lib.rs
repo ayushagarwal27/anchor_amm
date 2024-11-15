@@ -3,8 +3,8 @@ use anchor_lang::prelude::*;
 declare_id!("HEtLhVb4bn4SpueukorDMpyFfNHijyMi1vgFxErnjjPj");
 
 mod state;
-mod error;
 mod instructions;
+mod error;
 
 use instructions::*;
 
