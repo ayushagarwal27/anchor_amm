@@ -6,3 +6,6 @@ use deposit::*;
 
 mod withdraw;
 use withdraw::*;
+
+mod swap;
+use swap::*;
