@@ -1,11 +1,11 @@
-mod initialize;
-use initialize::*;
+pub mod initialize;
+pub use initialize::*;
 
-mod deposit;
+pub mod deposit;
 use deposit::*;
 
-mod withdraw;
-use withdraw::*;
+pub mod withdraw;
+pub use withdraw::*;
 
-mod swap;
-use swap::*;
+pub mod swap;
+pub use swap::*;

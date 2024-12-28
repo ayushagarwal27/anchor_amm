@@ -1,15 +1,17 @@
+use crate::error::AmmError;
+use crate::state::Config;
 use anchor_lang::prelude::*;
 use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{Mint, Token, TokenAccount};
-use crate::state::Config;
 
 #[derive(Accounts)]
 #[instruction(seed:u64)]
 pub struct Initialize<'info> {
     #[account(mut)]
     pub initializer: Signer<'info>,
-    pub mint_x : Account<'info, Mint>,
-    pub mint_y : Account<'info, Mint>,
+    pub mint_x: Account<'info, Mint>,
+    pub mint_y: Account<'info, Mint>,
+
     #[account(
         init,
         payer = initializer,
@@ -19,6 +21,7 @@ pub struct Initialize<'info> {
         bump
     )]
     pub mint_lp: Account<'info, Mint>,
+
     #[account(
         init,
         payer = initializer,
@@ -26,6 +29,7 @@ pub struct Initialize<'info> {
         associated_token::authority = config,
     )]
     pub vault_x: Account<'info, TokenAccount>,
+
     #[account(
         init,
         payer = initializer,
@@ -33,6 +37,7 @@ pub struct Initialize<'info> {
         associated_token::authority = config,
     )]
     pub vault_y: Account<'info, TokenAccount>,
+
     #[account(
         init,
         payer = initializer,
@@ -41,22 +46,30 @@ pub struct Initialize<'info> {
         bump
     )]
     pub config: Account<'info, Config>,
+
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
-    pub system_program: Program<'info, System>
+    pub system_program: Program<'info, System>,
 }
 
-impl <'info> Initialize<'info> {
-    pub fn initialize_config(&mut self, seed: u64, fee:u16, authority: Option<Pubkey>,  bumps: &InitializeBumps) -> Result<()>{
+impl<'info> Initialize<'info> {
+    pub fn initialize_config(
+        &mut self,
+        seed: u64,
+        fee: u16,
+        authority: Option<Pubkey>,
+        bumps: &InitializeBumps,
+    ) -> Result<()> {
+        require!(fee <= 10000, AmmError::InvalidFee);
         self.config.set_inner({
-            Config{
+            Config {
                 seed,
                 authority,
                 fee,
-                locked:false,
+                locked: false,
                 mint_x: self.mint_x.key(),
-                mint_y:self.mint_x.key(),
-                config_bump:bumps.config,
+                mint_y: self.mint_x.key(),
+                config_bump: bumps.config,
                 lp_bump: bumps.mint_lp,
             }
         });
