@@ -1,9 +1,10 @@
 ## Automated Market Maker (AMM)
 
-A AMM program where users can:  
-- User can create liquidity pool
-- deposit tokens
-- 
+A AMM program where:  
+- liquidity pool is created
+- provider can deposit tokens
+- user can swap tokens via the pool
+- provider can withdraw tokens from pool
 
 ### State
 
@@ -27,3 +28,9 @@ pub struct Config {
 - Deposit: 
   - deposit liquidity tokens from user-ata to liquidity tokens-ata
   - mint lp tokens to user-lp-ata
+- Swap:
+  - deposit x  token from user-ata-x to lp-vault-ata-x
+  - withdraw y from lp-vault-ata-y to user-ata-y
+- Withdraw:
+  - withdraw tokens from lp pool vault to provider-ata
+  - burn lp tokens owned by provider
